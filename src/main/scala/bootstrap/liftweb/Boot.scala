@@ -34,14 +34,16 @@ class Boot {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, User)
+    Schemifier.schemify(true, Schemifier.infoF _, User, Recipe)
 
     // where to search snippet
     LiftRules.addToPackages("code")
 
     // Build SiteMap
     def sitemap = SiteMap(
-      Menu.i("Home") / "index" >> User.AddUserMenusAfter, // the simple way to declare a menu
+      Menu.i("Home") / "index",
+      Menu.i("Recipes") / "recipes" / "index",
+      Menu.i("Add") / "recipes" / "add" >> User.AddUserMenusAfter, // the simple way to declare a menu
 
       // more complex because this menu allows anything in the
       // /static path to be visible
