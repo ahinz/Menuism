@@ -1,6 +1,7 @@
 package code 
 package snippet 
 
+import net.liftweb.mapper._
 import net.liftweb.http._
 import net.liftweb.http.js.JsCmds._
 import scala.xml.{NodeSeq, Text}
@@ -14,6 +15,30 @@ import code.model._
 
 class Recipes {
 
+  val recipeBox:Box[Recipe] = S.param("id").flatMap(id => Recipe.find(By(Recipe.id, id.toLong)))
+
+  def recipe:Recipe = recipeBox match {
+    case Full(r) => r
+    case Empty => S.redirectTo("FAIL")
+  }
+  
+
+  def recipe_main = "#recipe_name *" #> recipe.name
+  def upcoming = ".liftrow *" #> <td>No Upcoming Meals</td>
+
+
+
+
+
+
+
+
+
+
+/*
+////////////////////////////////////////////////////////////////////////
+*/
+
   def list = ".liftrow" #> Recipe.findAll.map(r =>
     ".liftrow [id]" #> r.rowid() & 
     "#name *" #> r.name &
@@ -25,8 +50,6 @@ class Recipes {
   var url = ""
   var rating = 0
  
-  def t = 1
-
   def processEntryAdd() = {
     val rcp = Recipe.create.name(name).url(url).rating(rating)
 

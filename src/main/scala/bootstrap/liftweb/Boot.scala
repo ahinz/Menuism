@@ -34,7 +34,7 @@ class Boot {
     // Use Lift's Mapper ORM to populate the database
     // you don't need to use Mapper to use Lift... use
     // any ORM you want
-    Schemifier.schemify(true, Schemifier.infoF _, User, Recipe)
+    Schemifier.schemify(true, Schemifier.infoF _, User, Recipe, Meal)
 
     // where to search snippet
     LiftRules.addToPackages("code")
@@ -43,6 +43,7 @@ class Boot {
     def sitemap = SiteMap(
       Menu.i("Home") / "index",
       Menu.i("Recipes") / "recipes" / "index",
+      Menu.i("Recipe") / "recipe" / "view", 
       Menu.i("Add") / "recipes" / "add" >> User.AddUserMenusAfter, // the simple way to declare a menu
 
       // more complex because this menu allows anything in the
@@ -79,5 +80,11 @@ class Boot {
 
     // Make a transaction span the whole HTTP request
     S.addAround(DB.buildLoanWrapper)
+
+    LiftRules.rewrite.append {
+      case RewriteRequest(ParsePath(List("recipe", "view", id), _, _, _),_,_) => 
+        RewriteResponse("recipe" :: "view" :: Nil, Map("id" -> id))
+    }
+    
   }
 }

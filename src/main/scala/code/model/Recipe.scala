@@ -31,6 +31,8 @@ class Recipe extends LongKeyedMapper[Recipe] with IdPK with Validators {
     override def textareaCols = 50
     override def displayName = "Personal Essay"
   }
+
+  def meals = Meal.findAll(By(Meal.recipe, this.id))
 }
 
 object Recipe extends Recipe with LongKeyedMetaMapper[Recipe]  {
