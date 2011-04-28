@@ -1,9 +1,12 @@
 package code 
 package snippet 
 
+import java.text.SimpleDateFormat
 import net.liftweb.mapper._
 import net.liftweb.http._
 import net.liftweb.http.js.JsCmds._
+import net.liftweb.http.js._
+import net.liftweb.http.js.JE._
 import scala.xml.{NodeSeq, Text}
 import net.liftweb.util._
 import net.liftweb.common._
@@ -12,6 +15,10 @@ import code.lib._
 import Helpers._
 
 import code.model._
+
+object Util {
+  val slashDate = new SimpleDateFormat("MM/dd/yyyy")
+}
 
 class Recipes {
 
@@ -22,15 +29,22 @@ class Recipes {
     case Empty => S.redirectTo("FAIL")
   }
   
+  var newMealDate:Date = new Date
 
   def recipe_main = "#recipe_name *" #> recipe.name
-  def upcoming = ".liftrow *" #> <td>No Upcoming Meals</td>
+
+  def upcoming = ".liftrow *" #> <td>No Upcoming Meals</td> &
+                    ".liftrow [id]" #> "no_upcoming"
+
+  def schedule_meal = "name=schedule" #> (SHtml.text(
+                        Util.slashDate.format(newMealDate),
+                        Util.slashDate.parse(_), "id" -> "schedule") ++ SHtml.hidden(addMeal))
 
 
-
-
-
-
+  def addMeal():JsCmd = {
+    S.error("This does nothing... yet...")
+    JsRaw("insert_upcoming('2/2/2');")
+  }
 
 
 

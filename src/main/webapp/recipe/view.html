@@ -14,6 +14,12 @@
       $(function() {
         $("#schedule").datepicker();
       });
+
+      function insert_upcoming(date) {
+	  $('#no_upcoming').remove();
+	  $('#upcoming > tbody:last').append($('<tr><td>' + date + '</td><td>[Skip] [Remove]</td></tr>'));
+      }
+        
     </script>
    </head_merge>
       <div id="content" class="lift:Recipes.recipe_main">
@@ -25,14 +31,18 @@
 	  <br />
 	</div>
 	
-	<div>
-	  <div>Schedule for future date:</div>
-	  <div><input type="text" id="schedule"></input> <a href="#">Schedule</a></div>
-	  <br />
-	</div>
+	<form class="lift:form.ajax">
+	  <div class="lift:Recipes.schedule_meal?form=get">
+	    <div>Schedule for future date:</div>
+	    <div>
+	      <input type="text" name="schedule" />
+	      <input type="submit" name="submit" />
+	    <br />
+	  </div>
+	</form>
 	<div>
 	  Upcoming Meals:
-	  <table class="lift:Recipes.upcoming">
+	  <table id="upcoming" class="lift:Recipes.upcoming">
 	    <tr class="liftrow">
 	      <td><span id="date">Monday 4/26/2011</span></td>
 	      <td><span id="skip">[Skip]</span><span id="remove">[Remove]</span></td>
